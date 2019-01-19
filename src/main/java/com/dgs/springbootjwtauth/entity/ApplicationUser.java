@@ -30,7 +30,7 @@ public class ApplicationUser {
 	
 	@ManyToMany(fetch = FetchType.EAGER,
 			cascade = {CascadeType.DETACH, CascadeType.MERGE, 
-		CascadeType.PERSIST, CascadeType.REFRESH})
+		CascadeType.REFRESH})
 	@JoinTable(name = "appuser_role",
 			joinColumns = @JoinColumn(name = "appuser_id"),
 			inverseJoinColumns = @JoinColumn(name = "approle_id"))

@@ -3,11 +3,15 @@ package com.dgs.springbootjwtauth.entity;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
@@ -27,7 +31,13 @@ public class Role {
 	private String authority;
 	
 	@JsonIgnore
-	@ManyToMany(mappedBy = "authorities")
+//	@ManyToMany(mappedBy = "authorities")
+	@ManyToMany(fetch = FetchType.EAGER,
+			cascade = {CascadeType.DETACH, CascadeType.MERGE, 
+		CascadeType.PERSIST, CascadeType.REFRESH})
+	@JoinTable(name = "appuser_role",
+		joinColumns = @JoinColumn(name = "approle_id"),
+		inverseJoinColumns = @JoinColumn(name = "appuser_id"))
 	private Set<ApplicationUser> users = new HashSet<>();
 
 	public Role() {
