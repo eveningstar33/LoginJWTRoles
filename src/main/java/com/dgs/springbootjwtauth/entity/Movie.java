@@ -1,4 +1,4 @@
-package com.dgs.springbootjwtauth.movie;
+package com.dgs.springbootjwtauth.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

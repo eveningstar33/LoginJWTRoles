@@ -14,22 +14,22 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import com.dgs.springbootjwtauth.repos.ApplicationUserRepository;
+
 import static com.dgs.springbootjwtauth.security.SecurityConstants.SIGN_UP_URL;
 
 @Configuration
 @EnableWebSecurity
 public class WebSecurity extends WebSecurityConfigurerAdapter {
+	
+	@Autowired
+	private ApplicationUserRepository applicationUserRepository;
 
 	@Autowired
 	private UserDetailsServiceImpl userDetailsService;
 	
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
-	
-	@Bean
-	public BCryptPasswordEncoder bCryptPasswordEncoder() {
-	    return new BCryptPasswordEncoder();
-	}
 	
 	@Override
 	public void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -43,13 +43,13 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 		http
 			.cors().and().csrf().disable()
 			.authorizeRequests()
-			.antMatchers(HttpMethod.POST, SIGN_UP_URL).permitAll()
-			.antMatchers("/task").hasAuthority("USER")
-			.antMatchers("/movie").hasAuthority("ADMIN")
+//			.antMatchers(HttpMethod.POST, SIGN_UP_URL).permitAll()
+			.antMatchers("/task").hasRole("USER")
+			.antMatchers("/movie").hasRole("ADMIN")
 			.anyRequest().authenticated()
 			.and()
 			.addFilter(new JWTAuthenticationFilter(authenticationManager()))
-			.addFilter(new JWTAuthorizationFilter(authenticationManager()))
+			.addFilter(new JWTAuthorizationFilter(authenticationManager(), applicationUserRepository, userDetailsService))
             // this disables session creation on Spring Security
 			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 	}

@@ -1,4 +1,4 @@
-package com.dgs.springbootjwtauth.task;
+package com.dgs.springbootjwtauth.controller;
 
 import java.util.List;
 
@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.dgs.springbootjwtauth.entity.Task;
+import com.dgs.springbootjwtauth.repos.TaskRepository;
 
 @RestController
 public class TaskController {
